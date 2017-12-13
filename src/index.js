@@ -4,36 +4,15 @@ import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
 import {BrowserRouter, Route } from 'react-router-dom';
 
-import App from './components/app';
 import reducers from './reducers';
 
+import PostsIndex from './components/PostsIndex';
 
-const createStoreWithMiddleware = applyMiddleware()(createStore);
-
-
-
-// create a component
-class Hello extends React.Component {
-  render() {
-    return (
-      <div>
-          Hello route
-      </div>
-    );
-  }
-}
+import promise from 'redux-promise';
 
 
-// create a component
-class Goodbye extends React.Component {
-  render() {
-    return (
-      <div>
-          Hello world
-      </div>
-    );
-  }
-}
+const createStoreWithMiddleware = applyMiddleware(promise)(createStore);
+
 
 
 
@@ -41,8 +20,8 @@ ReactDOM.render(
   <Provider store={createStoreWithMiddleware(reducers)}>
     <BrowserRouter>
       <div>
-        <Route path="/hello" component={Hello} />
-        <Route path="/goodbye" component={Goodbye} />
+        <Route path="/" component={PostsIndex} />
+        
       </div>
     </BrowserRouter>
   </Provider>
