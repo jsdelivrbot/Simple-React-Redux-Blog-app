@@ -8,7 +8,7 @@ export default function (state = {}, action)
 {
     switch(action.type)
     {
-        case FETCH_POSTS: 
+        case FETCH_POSTS: // parse array into an object.
             return _.mapKeys(action.payload.data, 'id');
         case FETCH_POST: // we dont wanna throw away all our
             // old posts from this piece of state so 

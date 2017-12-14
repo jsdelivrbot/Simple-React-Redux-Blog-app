@@ -25,7 +25,6 @@ class PostsIndex extends Component {
     {
         // start data loading process.
         this.props.fetchPosts();
-
     }
 
     renderPosts()
@@ -35,7 +34,7 @@ class PostsIndex extends Component {
         const builtPosts = _.map(posts, post => {
             return (
                 <li key={post.id} className="list-group-item">
-                    {post.title}
+                    <Link to={`/posts/${post.id}`}>{post.title}</Link>
                 </li>
             );
         });
