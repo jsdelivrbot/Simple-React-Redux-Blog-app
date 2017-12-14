@@ -25,12 +25,13 @@ class PostsIndex extends Component {
     {
         // start data loading process.
         this.props.fetchPosts();
-        
+
     }
 
     renderPosts()
     {
         const {posts} = this.props;
+
         const builtPosts = _.map(posts, post => {
             return (
                 <li key={post.id} className="list-group-item">

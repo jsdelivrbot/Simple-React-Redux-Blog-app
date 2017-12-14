@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { createPost } from '../actions';
 import {Field, reduxForm} from 'redux-form';
+import {Link} from 'react-router-dom';
+import {connect} from 'react-redux';
+import {createPost} from '../actions';
 
 // create a component
 class PostsNew extends Component {
@@ -22,11 +23,13 @@ class PostsNew extends Component {
 
     renderField(field)
     {
-        return ( // field.meta.error is put forth via the validator.
-            <div className={`
-                form-group 
-                ${field.meta.error && field.meta.touched ? 'has-danger' : ''}
-            `}>
+        // destructuring 
+        const  { meta: { touched, error } } = field;
+        const wrapperClassName = 
+        `form-group ${error && touched ? 'has-danger' : ''}`;
+
+        return ( // error is put forth via the validator.
+            <div className={wrapperClassName}>
             {/* 
                 What meta.touched means is the user has assumed focus of 
                 the given field and transfer focus. 
@@ -42,19 +45,25 @@ class PostsNew extends Component {
                     {...field.input} 
                 />
                 <div className="text-help">
-                    {field.meta.error && field.meta.touched ? `${field.meta.error}` : ""}
+                    {error && touched ? `${error}` : ""}
                 </div>
             </div>
         );
     }
-
+    // when user wants to submit the form: NOTE: 
+    // form is already valid at this point
     onSubmit(values)
     {
-        console.log("submit: ", values)
+        this.props.createPost(values, () => {
+            // redirect user. this is react-router
+            this.props.history.push('/');
+        });
+        
+        
     }
 
     render() {
-        // handle submit is a new prop that redux form addes to this component.
+        // handle submit is a new prop that redux form add's to this component.
         const { handleSubmit } = this.props;
         return (
             <form onSubmit={handleSubmit(this.onSubmit)}>
@@ -64,8 +73,8 @@ class PostsNew extends Component {
                     component={this.renderField}
                 />
                 <Field // Field is like a wrapper, while component is the view of the field.
-                    label="Catagories"
-                    name="catagories"
+                    label="Categories"
+                    name="categories"
                     component={this.renderField}
                 />
                 <Field // Field is like a wrapper, while component is the view of the field.
@@ -73,7 +82,8 @@ class PostsNew extends Component {
                     name="content"
                     component={this.renderField}
                 />
-                <button type="submit" className="btn btn-primary">Submit</button>
+                <button type="submit" className="btn btn-primary">Post</button>
+                <Link style={{marginLeft: "10px"}} className="btn btn-danger" to="/">Cancel</Link>
             </form>
         );
     }
@@ -108,4 +118,6 @@ export default reduxForm({
     validate,
     // name of form, sort of a namespace for all state in this form.
     form: 'PostsNewForm'
-})(PostsNew);
+})(
+    connect(null, { createPost })(PostsNew)
+);
