@@ -25,6 +25,7 @@ class PostsIndex extends Component {
     {
         // start data loading process.
         this.props.fetchPosts();
+        
     }
 
     renderPosts()
